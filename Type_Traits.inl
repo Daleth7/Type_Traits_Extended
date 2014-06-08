@@ -86,4 +86,26 @@ namespace Type_Trait{
         typedef std::false_type		type;
         typedef Derived 			base;
     };
+
+    namespace Helper{
+        template <std::size_t Index, std::size_t N, typename T, typename... Tn>
+        struct switch_case{
+            typedef typename Helper::switch_case<Index+1, N, Tn...>::type type;
+        };
+        
+        template <std::size_t N, typename T, typename... Tn>
+        struct switch_case<N, N, T, Tn...>{
+            typedef T type;
+        };
+    }
+
+    template <std::size_t N, typename T, typename... Tn>
+    struct switch_case{
+        typedef typename Helper::switch_case<0, N, T, Tn...>::type type;
+    };
+
+    template <typename T, typename... Tn>
+    struct switch_case<0, T, Tn...>{
+        typedef T type;
+    };
 }

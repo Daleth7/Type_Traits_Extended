@@ -49,7 +49,6 @@ namespace Type_Trait{
     template <typename T1, typename... Tn>
         struct any_true;
 
-
     /*  count_matches<T1, T2, Tn...> takes type T1 and compares it to
         the rest of the parameter list, counting the total number of
         types that match it. At least two parameters must be provided.
@@ -69,8 +68,6 @@ namespace Type_Trait{
     */
     template <typename T1, typename T2, typename... Tn>
         struct count_matches;
-
-
 
     /*  find_base<Derived, BaseN...> looks for the first type in the BaseN
         parameter pack that is a base type of Derived. Note that only the
@@ -93,6 +90,39 @@ namespace Type_Trait{
     */
     template <typename Derived, typename... BaseN>
         struct find_base;
+
+    /*  switch_case<N, T, Tn...> is like the switch-case expression except
+        this is for selecting types given an index number. This also means
+        this class is similar to std::tuple and std::get. This class is
+        to std::conditional as the switch-case expression is to the
+        if-else expression.
+
+        Template Parameters:
+            * N - a std::size_t object. This is the compile-time index that
+                chooses a type out of the list.
+            * T - the first type/case
+            * Tn... - additional cases
+        Members:
+            * type - the resultant type from choosing the (N+1)th type from
+                the type list. For example, if N == 0, type would be
+                equivalent to T.
+
+        Example use:
+            constexpr std::size_t get_half(std::size_t n)
+                {return n >> 1;}
+
+                //Creates a char type variable
+            Type_Trait::switch_case<
+                get_half(6),                //The condition / index
+                int,                        //Case 0
+                float,                      //Case 1
+                std::size_t,                //Case 2
+                char,                       //Case 3
+                double                      //Case 4
+            >::type var;
+    */
+    template <std::size_t N, typename T, typename... Tn>
+        struct switch_case;
 }
 
 #include "Type_Traits_Ext.inl"
