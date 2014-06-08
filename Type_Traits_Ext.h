@@ -43,7 +43,7 @@ namespace Type_Trait{
                 //Creates a char type variable
             Type_Trait::conditional<
                 Type_Trait::any_true<ft, ft, ft, ft, ft, ft, ft, tt>::type,
-                int, char
+                char, int
             > var;
     */
     template <typename T1, typename... Tn>
