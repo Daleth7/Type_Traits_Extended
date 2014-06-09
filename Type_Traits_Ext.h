@@ -138,7 +138,7 @@ namespace Type_Trait{
                 int,                        //Case 0
                 float,                      //Case 1
                 std::size_t,                //Case 2
-            >::type var;
+            >::type var2;
     */
     template <std::size_t N, typename T, typename... Tn>
         struct switch_case;
