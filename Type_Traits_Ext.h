@@ -86,7 +86,13 @@ namespace Type_Trait{
                 this type is equivalent to Derived.
 
         Example use:
-            assert(Type_Trait::count_matches<int, int, char, int>::match == 2);
+            struct A{};
+            struct B{};
+            struct C : A, B{};
+            struct D : B{};
+
+                //Creates an A type variable
+            Type_Trait::find_base<C, D, D, C, B, A, A>::base var;
     */
     template <typename Derived, typename... BaseN>
         struct find_base;
