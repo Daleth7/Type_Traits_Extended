@@ -110,7 +110,7 @@ namespace Type_Trait{
                 * N - a std::size_t object. This is the compile-time index that
                     chooses a type out of the list.
                 * Default - the default case should N be too large of an index.
-                    For switch_cast<N, T, Tn...>, this is equivalent to void.
+                    For switch_case<N, T, Tn...>, this is equivalent to void.
                 * Tn... - cases
         Members:
             * type - the resultant type from choosing the (N+1)th type from
