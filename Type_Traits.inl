@@ -77,8 +77,8 @@ namespace Type_Trait{
 
     template <typename Derived, typename Base>
     struct find_base<Derived, Base>{
-        typedef typename std::is_base_of<Base, Derived>::type		type;
-        typedef typename conditional<type, Base, Derived>::type 	base;
+        typedef typename std::is_base_of<Base, Derived>::type   type;
+        typedef typename conditional<type, Base, Derived>::type base;
     };
 
     template <typename Derived>
@@ -88,24 +88,43 @@ namespace Type_Trait{
     };
 
     namespace Helper{
-        template <std::size_t Index, std::size_t N, typename T, typename... Tn>
-        struct switch_case{
-            typedef typename Helper::switch_case<Index+1, N, Tn...>::type type;
+        template <
+            std::size_t Index, std::size_t N,
+            typename T, typename... Tn
+        >
+        struct switch_case_choose{
+            typedef typename Helper::switch_case_choose
+                <Index+1, N, Tn...>::type type;
         };
-        
+
         template <std::size_t N, typename T, typename... Tn>
-        struct switch_case<N, N, T, Tn...>{
+        struct switch_case_choose<N, N, T, Tn...>{
             typedef T type;
+        };
+
+        template <bool, std::size_t N, typename Default, typename... Tn>
+        struct switch_case_default;
+
+        template <std::size_t N, typename Default, typename... Tn>
+        struct switch_case_default<true, N, Default, Tn...>{
+            typedef Default type;
+        };
+
+        template <std::size_t N, typename Default, typename... Tn>
+        struct switch_case_default<false, N, Default, Tn...>{
+            typedef typename switch_case_choose<0, N, Tn...>::type type;
         };
     }
 
-    template <std::size_t N, typename T, typename... Tn>
-    struct switch_case{
-        typedef typename Helper::switch_case<0, N, T, Tn...>::type type;
+    template <std::size_t N, typename Default, typename... Tn>
+    struct switch_case_default{
+        typedef typename Helper::switch_case_default
+            < (sizeof...(Tn)-1<N), N, Default, Tn...>::type type;
     };
 
-    template <typename T, typename... Tn>
-    struct switch_case<0, T, Tn...>{
-        typedef T type;
+    template <std::size_t N, typename T, typename... Tn>
+    struct switch_case{
+        typedef typename switch_case_default
+            <N, void, T, Tn...>::type type;
     };
 }

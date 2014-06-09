@@ -95,17 +95,22 @@ namespace Type_Trait{
         this is for selecting types given an index number. This also means
         this class is similar to std::tuple and std::get. This class is
         to std::conditional as the switch-case expression is to the
-        if-else expression.
+        if-else statement.
+        A second form, switch_case_default<N, Default, Tn...>, is provided
+        that allows the client to specify a Default type should N be greater
+        than or equal to sizeof...(Tn), or the number of cases.
 
         Template Parameters:
             * N - a std::size_t object. This is the compile-time index that
                 chooses a type out of the list.
+            * Default - the default case should N be too large of an index.
             * T - the first type/case
             * Tn... - additional cases
         Members:
             * type - the resultant type from choosing the (N+1)th type from
                 the type list. For example, if N == 0, type would be
-                equivalent to T.
+                equivalent to T. If N is greater than or equal to the number
+                of cases, type will be equivalent to void.
 
         Example use:
             constexpr std::size_t get_half(std::size_t n)
@@ -120,9 +125,19 @@ namespace Type_Trait{
                 char,                       //Case 3
                 double                      //Case 4
             >::type var;
+                //Creates a double type variable
+            Type_Trait::switch_case_default<
+                get_half(8),                //The condition / index
+                double,                     //Default case
+                int,                        //Case 0
+                float,                      //Case 1
+                std::size_t,                //Case 2
+            >::type var;
     */
     template <std::size_t N, typename T, typename... Tn>
         struct switch_case;
+    template <std::size_t N, typename Default, typename... Tn>
+        struct switch_case_default;
 }
 
 #include "Type_Traits_Ext.inl"
