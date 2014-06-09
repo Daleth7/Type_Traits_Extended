@@ -91,7 +91,7 @@ namespace Type_Trait{
             struct C : A, B{};
             struct D : B{};
 
-                //Creates an A type variable
+                //Creates a B type variable
             Type_Trait::find_base<C, D, D, C, B, A, A>::base var;
     */
     template <typename Derived, typename... BaseN>
