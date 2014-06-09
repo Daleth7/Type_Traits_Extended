@@ -101,16 +101,22 @@ namespace Type_Trait{
         than or equal to sizeof...(Tn), or the number of cases.
 
         Template Parameters:
-            * N - a std::size_t object. This is the compile-time index that
-                chooses a type out of the list.
-            * Default - the default case should N be too large of an index.
-            * T - the first type/case
-            * Tn... - additional cases
+            switch_case:
+                * N - a std::size_t object. This is the compile-time index that
+                    chooses a type out of the list.
+                * T - the first type/case
+                * Tn... - additional cases
+            switch_case_default:
+                * N - a std::size_t object. This is the compile-time index that
+                    chooses a type out of the list.
+                * Default - the default case should N be too large of an index.
+                    For switch_cast<N, T, Tn...>, this is equivalent to void.
+                * Tn... - cases
         Members:
             * type - the resultant type from choosing the (N+1)th type from
                 the type list. For example, if N == 0, type would be
                 equivalent to T. If N is greater than or equal to the number
-                of cases, type will be equivalent to void.
+                of cases, type will be equivalent to the Default type.
 
         Example use:
             constexpr std::size_t get_half(std::size_t n)
